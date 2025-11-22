@@ -23,9 +23,9 @@ export const CalculatorForm: React.FC = () => {
   }, [calculate]);
 
   const carTypeOptions = [
-    { value: 'electric', label: '⚡ Электро' },
-    { value: 'hybrid', label: '🔌 Гибрид' },
-    { value: 'hybrid28', label: '⛽ Гибрид 28.8%' }
+    { value: 'electric', label: 'Электро' },
+    { value: 'hybrid', label: 'Гибрид' },
+    { value: 'hybrid28', label: 'Гибрид 28.8%' }
   ];
 
   const vatOptions = VAT_OPTIONS;
@@ -228,7 +228,7 @@ export const CalculatorForm: React.FC = () => {
 
           <div className="pt-4">
             <Button onClick={reset} variant="outline" className="w-full">
-              🔄 Сбросить все
+              Сбросить все
             </Button>
           </div>
         </div>

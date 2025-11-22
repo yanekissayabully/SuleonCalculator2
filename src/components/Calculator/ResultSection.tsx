@@ -70,8 +70,8 @@ export const ResultsSection: React.FC = () => {
           <div>
             <span className="font-medium text-gray-600">Тип автомобиля:</span>
             <p className="text-gray-800">
-              {carType === 'electric' ? '⚡ Электро' : 
-               carType === 'hybrid' ? '🔌 Гибрид' : '⛽ Гибрид 28.8%'}
+              {carType === 'electric' ? 'Электро' : 
+               carType === 'hybrid' ? 'Гибрид' : 'Гибрид 28.8%'}
             </p>
           </div>
         </div>
@@ -80,22 +80,22 @@ export const ResultsSection: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="result-card result-positive">
           <h4 className="font-semibold text-gray-600">Итого в USD</h4>
-          <p className="text-2xl font-bold text-green-600">${result.totalUSD.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-gray-700">${result.totalUSD.toFixed(2)}</p>
         </div>
         
         <div className="result-card result-warning">
           <h4 className="font-semibold text-gray-600">Итого в KZT</h4>
-          <p className="text-2xl font-bold text-yellow-600">{Math.round(result.totalKZT).toLocaleString()} ₸</p>
+          <p className="text-2xl font-bold text-gray-700">{Math.round(result.totalKZT).toLocaleString()} ₸</p>
         </div>
         
         <div className="result-card result-positive">
           <h4 className="font-semibold text-gray-600">Маржа</h4>
-          <p className="text-2xl font-bold text-blue-600">${result.margin.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-gray-700">${result.margin.toFixed(2)}</p>
         </div>
         
         <div className="result-card result-warning">
           <h4 className="font-semibold text-gray-600">Цена в Китае</h4>
-          <p className="text-2xl font-bold text-purple-600">${result.priceInChina.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-gray-700">${result.priceInChina.toFixed(2)}</p>
         </div>
       </div>
 
@@ -150,7 +150,7 @@ export const ResultsSection: React.FC = () => {
         <ul className="text-xs text-gray-600 space-y-1">
           <li>• Курс USD: {inputs.exchangeRate} KZT</li>
           <li>• Тип расчета: {carType === 'electric' ? 'Электро' : carType === 'hybrid' ? 'Гибрид' : 'Гибрид 28.8%'}</li>
-          <li>• 💰 Маржа: ${result.margin.toFixed(2)}</li>
+          <li>• Маржа: ${result.margin.toFixed(2)}</li>
         </ul>
       </div>
     </div>

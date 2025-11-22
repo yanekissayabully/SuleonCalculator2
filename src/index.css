@@ -28,13 +28,13 @@ body {
 }
 
 .result-positive {
-  border-left-color: #10b981;
+  border-left-color: #525252;
 }
 
 .result-warning {
-  border-left-color: #f59e0b;
+  border-left-color: #525252;
 }
 
 .result-negative {
-  border-left-color: #ef4444;
+  border-left-color: #525252;
 }
