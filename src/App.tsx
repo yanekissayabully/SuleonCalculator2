@@ -1,24 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { CalculatorForm } from './components/Calculator/CalculatorForm';
+import { ResultsSection } from './components/Calculator/ResultSection';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="min-h-screen bg-gray-100 py-8">
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            🚗 Калькулятор таможенных расходов
+          </h1>
+          <p className="text-gray-600">
+            Расчет стоимости импорта автомобилей из Китая в Казахстан
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          <CalculatorForm />
+          <ResultsSection />
+        </div>
+
+        <footer className="mt-12 text-center text-gray-500 text-sm">
+          <p>Версия 0.1.1 • Данные актуальны на {new Date().toLocaleDateString('ru-RU')}</p>
+        </footer>
+      </div>
     </div>
   );
 }
