@@ -2,13 +2,12 @@ import React from 'react';
 
 interface InputProps {
   label: string;
-  value: number;
-  onChange: (value: number) => void;
+  value: number | string;
+  onChange: (value: any) => void;
   type?: 'text' | 'number';
   placeholder?: string;
   disabled?: boolean;
-  managerOnly?: boolean;
-  isManagerView?: boolean;
+  className?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -18,27 +17,27 @@ export const Input: React.FC<InputProps> = ({
   type = 'number',
   placeholder,
   disabled = false,
-  managerOnly = false,
-  isManagerView = false
+  className = ''
 }) => {
-  if (managerOnly && !isManagerView) {
-    return null;
-  }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (type === 'number') {
+      // Позволяем пустое значение и отрицательные числа
+      const newValue = e.target.value === '' ? '' : parseFloat(e.target.value);
+      onChange(isNaN(newValue as number) ? '' : newValue);
+    } else {
+      onChange(e.target.value);
+    }
+  };
 
   return (
-    <div className="mb-4">
+    <div className={`mb-4 ${className}`}>
       <label className="block text-sm font-medium text-gray-700 mb-1">
         {label}
-        {managerOnly && (
-          <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
-            Только менеджер
-          </span>
-        )}
       </label>
       <input
         type={type}
         value={value}
-        onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
+        onChange={handleChange}
         placeholder={placeholder}
         disabled={disabled}
         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

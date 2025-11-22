@@ -3,7 +3,7 @@ import { useCalculatorStore } from '../../store/calculatorStore';
 import { calculateTotalCustomsFees } from '../../utils/calculations';
 
 export const ResultsSection: React.FC = () => {
-  const { result, carType, inputs, isManagerView } = useCalculatorStore();
+  const { result, carType, carInfo, inputs } = useCalculatorStore();
 
   if (!result) {
     return (
@@ -15,9 +15,67 @@ export const ResultsSection: React.FC = () => {
 
   const totalCustomsFees = calculateTotalCustomsFees(inputs.customsFees);
 
+  // Функция для получения названия типа кузова
+  const getBodyTypeLabel = (bodyType: string) => {
+    const bodyTypes: { [key: string]: string } = {
+      sedan: 'Седан',
+      hatchback: 'Хэтчбек',
+      station_wagon: 'Универсал',
+      suv: 'Кроссовер/SUV',
+      pickup: 'Пикап',
+      coupe: 'Купе',
+      convertible: 'Кабриолет'
+    };
+    return bodyTypes[bodyType] || bodyType;
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
       <h3 className="text-xl font-bold text-gray-800 mb-6">Результаты расчета</h3>
+
+      {/* Информация об автомобиле */}
+      <div className="mb-6">
+        <h4 className="text-lg font-semibold text-gray-700 mb-3">Информация об автомобиле</h4>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div>
+            <span className="font-medium text-gray-600">Марка:</span>
+            <p className="text-gray-800">{carInfo.brand || 'Не указана'}</p>
+          </div>
+          <div>
+            <span className="font-medium text-gray-600">Модель:</span>
+            <p className="text-gray-800">{carInfo.model || 'Не указана'}</p>
+          </div>
+          <div>
+            <span className="font-medium text-gray-600">Комплектация:</span>
+            <p className="text-gray-800">{carInfo.trim || 'Не указана'}</p>
+          </div>
+          <div>
+            <span className="font-medium text-gray-600">Тип кузова:</span>
+            <p className="text-gray-800">{getBodyTypeLabel(carInfo.bodyType)}</p>
+          </div>
+          <div>
+            <span className="font-medium text-gray-600">Объем двигателя:</span>
+            <p className="text-gray-800">
+              {carType === 'electric' ? 'Электро' : `${carInfo.engineVolume || 'Не указан'} л`}
+            </p>
+          </div>
+          <div>
+            <span className="font-medium text-gray-600">Год выпуска:</span>
+            <p className="text-gray-800">{carInfo.year}</p>
+          </div>
+          <div>
+            <span className="font-medium text-gray-600">Вес:</span>
+            <p className="text-gray-800">{carInfo.weight ? `${carInfo.weight} кг` : 'Не указан'}</p>
+          </div>
+          <div>
+            <span className="font-medium text-gray-600">Тип автомобиля:</span>
+            <p className="text-gray-800">
+              {carType === 'electric' ? '⚡ Электро' : 
+               carType === 'hybrid' ? '🔌 Гибрид' : '⛽ Гибрид 28.8%'}
+            </p>
+          </div>
+        </div>
+      </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="result-card result-positive">
@@ -30,12 +88,10 @@ export const ResultsSection: React.FC = () => {
           <p className="text-2xl font-bold text-yellow-600">{Math.round(result.totalKZT).toLocaleString()} ₸</p>
         </div>
         
-        {isManagerView && (
-          <div className="result-card result-positive">
-            <h4 className="font-semibold text-gray-600">Маржа</h4>
-            <p className="text-2xl font-bold text-blue-600">${result.margin.toFixed(2)}</p>
-          </div>
-        )}
+        <div className="result-card result-positive">
+          <h4 className="font-semibold text-gray-600">Маржа</h4>
+          <p className="text-2xl font-bold text-blue-600">${result.margin.toFixed(2)}</p>
+        </div>
         
         <div className="result-card result-warning">
           <h4 className="font-semibold text-gray-600">Цена в Китае</h4>
@@ -94,9 +150,7 @@ export const ResultsSection: React.FC = () => {
         <ul className="text-xs text-gray-600 space-y-1">
           <li>• Курс USD: {inputs.exchangeRate} KZT</li>
           <li>• Тип расчета: {carType === 'electric' ? 'Электро' : carType === 'hybrid' ? 'Гибрид' : 'Гибрид 28.8%'}</li>
-          {isManagerView && (
-            <li>• 💰 Маржа: ${result.margin.toFixed(2)}</li>
-          )}
+          <li>• 💰 Маржа: ${result.margin.toFixed(2)}</li>
         </ul>
       </div>
     </div>

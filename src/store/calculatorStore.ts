@@ -1,20 +1,20 @@
 import { create } from 'zustand';
-import { CarType, CalculatorInputs, CalculationResult } from '../types/calculator';
+import { CarType, CarInfo, CalculatorInputs, CalculationResult } from '../types/calculator';
 import { calculateTotal, calculateRecyclingFee, calculateCustomsDuty, calculateVAT } from '../utils/calculations';
-import { DEFAULT_VALUES } from '../utils/constants';
+import { DEFAULT_VALUES, DEFAULT_CAR_INFO } from '../utils/constants';
 
 interface CalculatorState {
   carType: CarType;
+  carInfo: CarInfo;
   inputs: CalculatorInputs;
   result: CalculationResult | null;
-  isManagerView: boolean;
   
   // Actions
   setCarType: (type: CarType) => void;
+  setCarInfo: (key: keyof CarInfo, value: any) => void;
   setInput: (key: keyof CalculatorInputs, value: any) => void;
   setCustomsFee: (key: keyof CalculatorInputs['customsFees'], value: boolean) => void;
   calculate: () => void;
-  toggleManagerView: () => void;
   reset: () => void;
 }
 
@@ -29,7 +29,7 @@ const initialInputs: CalculatorInputs = {
   vatRate: 0.12,
   vatAmount: 0,
   customsFees: {
-    noBenefit: true, // По умолчанию "Без льготы"
+    noBenefit: true,
     proofCost: false,
     classSolution: false
   },
@@ -38,13 +38,12 @@ const initialInputs: CalculatorInputs = {
 
 export const useCalculatorStore = create<CalculatorState>((set, get) => ({
   carType: 'electric',
+  carInfo: DEFAULT_CAR_INFO,
   inputs: initialInputs,
   result: null,
-  isManagerView: false,
 
   setCarType: (carType) => {
     set({ carType });
-    // При смене типа авто пересчитываем утиль сбор
     const recyclingFee = calculateRecyclingFee(carType);
     set(state => ({
       inputs: { 
@@ -53,6 +52,12 @@ export const useCalculatorStore = create<CalculatorState>((set, get) => ({
       }
     }));
     get().calculate();
+  },
+
+  setCarInfo: (key, value) => {
+    set(state => ({
+      carInfo: { ...state.carInfo, [key]: value }
+    }));
   },
 
   setInput: (key, value) => {
@@ -78,12 +83,10 @@ export const useCalculatorStore = create<CalculatorState>((set, get) => ({
   calculate: () => {
     const { carType, inputs } = get();
     try {
-      // Пересчитываем все зависимые значения
       const priceInChina = inputs.carCost + inputs.over;
       const customsDuty = calculateCustomsDuty(carType, priceInChina);
       const vatAmount = calculateVAT(carType, priceInChina, customsDuty, inputs.vatRate);
       
-      // Обновляем inputs с расчетными значениями
       set(state => ({
         inputs: {
           ...state.inputs,
@@ -92,7 +95,6 @@ export const useCalculatorStore = create<CalculatorState>((set, get) => ({
         }
       }));
 
-      // Считаем итоги
       const result = calculateTotal(carType, {
         ...inputs,
         customsDuty,
@@ -105,11 +107,11 @@ export const useCalculatorStore = create<CalculatorState>((set, get) => ({
     }
   },
 
-  toggleManagerView: () => {
-    set(state => ({ isManagerView: !state.isManagerView }));
-  },
-
   reset: () => {
-    set({ inputs: initialInputs, result: null });
+    set({ 
+      inputs: initialInputs, 
+      carInfo: DEFAULT_CAR_INFO,
+      result: null 
+    });
   }
 }));
