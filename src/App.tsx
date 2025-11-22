@@ -21,7 +21,7 @@ function App() {
         </div>
 
         <footer className="mt-12 text-center text-gray-500 text-sm">
-          <p>Версия 0.1.1 • Данные актуальны на {new Date().toLocaleDateString('ru-RU')}</p>
+          <p>• Данные актуальны на {new Date().toLocaleDateString('ru-RU')}</p>
         </footer>
       </div>
     </div>
