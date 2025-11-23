@@ -155,7 +155,7 @@ export const CalculatorForm: React.FC = () => {
           />
         </div>
 
-        {/* Колонка 3 - Налоги и сборы */}
+        {/* Колонка 3 - Налоги и сбор */}
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">Налоги и сборы</h3>
           
