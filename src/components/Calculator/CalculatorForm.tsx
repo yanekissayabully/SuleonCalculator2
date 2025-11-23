@@ -38,6 +38,11 @@ export const CalculatorForm: React.FC = () => {
     label: (currentYear - i).toString()
   }));
 
+  // Вспомогательная функция для отображения числовых значений
+  const formatNumberValue = (value: number) => {
+    return value === 0 ? '' : value.toString();
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Калькулятор таможенных расходов</h2>
@@ -88,8 +93,8 @@ export const CalculatorForm: React.FC = () => {
 
             <Input
               label="Объем двигателя (л)"
-              value={carInfo.engineVolume}
-              onChange={(value) => setCarInfo('engineVolume', value)}
+              value={formatNumberValue(carInfo.engineVolume)}
+              onChange={(value) => setCarInfo('engineVolume', value === '' ? 0 : parseFloat(value) || 0)}
               placeholder="1.5, 2.0, etc."
               disabled={carType === 'electric'}
             />
@@ -103,8 +108,8 @@ export const CalculatorForm: React.FC = () => {
 
             <Input
               label="Вес (кг)"
-              value={carInfo.weight}
-              onChange={(value) => setCarInfo('weight', value)}
+              value={formatNumberValue(carInfo.weight)}
+              onChange={(value) => setCarInfo('weight', value === '' ? 0 : parseFloat(value) || 0)}
               placeholder="Например: 1500"
             />
           </div>
@@ -116,35 +121,35 @@ export const CalculatorForm: React.FC = () => {
           
           <Input
             label="Себестоимость авто ($)"
-            value={inputs.carCost}
-            onChange={(value) => setInput('carCost', value)}
+            value={formatNumberValue(inputs.carCost)}
+            onChange={(value) => setInput('carCost', value === '' ? 0 : parseFloat(value) || 0)}
             placeholder="0"
-          />
+          /> 
 
           <Input
             label="Овер ($)"
-            value={inputs.over}
-            onChange={(value) => setInput('over', value)}
+            value={formatNumberValue(inputs.over)}
+            onChange={(value) => setInput('over', value === '' ? 0 : parseFloat(value) || 0)}
             placeholder="500"
           />
 
           <Input
             label="Доставка до Алматы ($)"
-            value={inputs.delivery}
+            value={inputs.delivery.toString()}
             onChange={(value) => setInput('delivery', value)}
             disabled={true}
           />
 
           <Input
             label="Комиссия компании ($)"
-            value={inputs.commission}
+            value={inputs.commission.toString()}
             onChange={(value) => setInput('commission', value)}
             disabled={true}
           />
 
           <Input
             label="Экспедирование ($)"
-            value={inputs.expedition}
+            value={inputs.expedition.toString()}
             onChange={(value) => setInput('expedition', value)}
             disabled={true}
           />
@@ -156,7 +161,7 @@ export const CalculatorForm: React.FC = () => {
           
           <Input
             label="Утиль сбор ($)"
-            value={inputs.recyclingFee}
+            value={inputs.recyclingFee.toString()}
             onChange={(value) => setInput('recyclingFee', value)}
             disabled={true}
           />
@@ -164,7 +169,7 @@ export const CalculatorForm: React.FC = () => {
           {carType === 'hybrid28' && (
             <Input
               label="Пошлина 15% ($)"
-              value={inputs.customsDuty}
+              value={inputs.customsDuty.toString()}
               onChange={(value) => setInput('customsDuty', value)}
               disabled={true}
             />
@@ -179,7 +184,7 @@ export const CalculatorForm: React.FC = () => {
 
           <Input
             label="Сумма НДС ($)"
-            value={inputs.vatAmount}
+            value={inputs.vatAmount.toString()}
             onChange={(value) => setInput('vatAmount', value)}
             disabled={true}
           />
@@ -221,8 +226,8 @@ export const CalculatorForm: React.FC = () => {
 
           <Input
             label="Курс USD/KZT"
-            value={inputs.exchangeRate}
-            onChange={(value) => setInput('exchangeRate', value)}
+            value={formatNumberValue(inputs.exchangeRate)}
+            onChange={(value) => setInput('exchangeRate', value === '' ? 0 : parseFloat(value) || 0)}
             placeholder="541"
           />
 
